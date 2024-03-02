@@ -48,14 +48,15 @@ available
 
 # admin site customizations
 
-<code>
-@admin.register(Product)
+<code> @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display =('name', 'category', 'slug', 'price', 'available')
     list_filter = ('category', 'available')
     list_editable = ('price', 'available')
     prepopulated_fields = {'slug': ('name',)}
 </code>
+
+</br>
 
 We added a couple of new attributes here. list_filter  will enable us to filter products by their category and availability. When we create some products, you will notice a sidebar in the Products section very similar to the one in Users. We will use the list_editable attribute to set the fields that can be edited from the administration site's display page. This will allow us to edit “multiple rows at once. Any field in list_editable must also be present in the  list_display attribute since only the displayed fields can be edited.
 While we are in the admin site, let’s add one more category to the portfolio (I will go with Extreme. Notice how the slug field is being filled in automatically).
