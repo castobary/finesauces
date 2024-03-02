@@ -87,8 +87,8 @@ While we are in the admin site, let’s add one more category to the portfolio (
 “To pass our `category_slug` to `product_list` view, we will need to modify `urls.py` file residing in listings application to include another URL that will be responsible for passing slug to our view:
 
 
-def get_absolute_url(self):
-        return reverse(
-            'listings:product_list_by_category',
-            args=[self.slug])
+
+## Detail view
+
+“This view is pretty straightforward. We provide category slug and product slug and fetch the corresponding product. We then pass it to our detail.html template, which we will build shortly. You might wonder where does category_id field comes from. Django, by default, adds it as the last column to our table to keep track of the relationship between category and product we defined in our models.py file.”
 
