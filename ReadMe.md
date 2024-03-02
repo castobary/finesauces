@@ -48,8 +48,7 @@ available
 
 # admin site customizations
 
-<code>
-@admin.register(Product)
+<code> @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display =('name', 'category', 'slug', 'price', 'available')
     list_filter = ('category', 'available')
