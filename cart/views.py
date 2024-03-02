@@ -59,4 +59,18 @@ def cart_detail(request):
       'cart_total_price': cart_total_price
     })
 
+def cart_remove(request, product_id):
+  cart = get_cart(request)
+  product_id = str(product_id)
+  if product_id in cart:
+    del cart[product_id]
+
+    request.session.modified = True
+
+    return redirect('cart:cart_detail')
+
+def cart_clear(request):
+  del request.session[settings.CART_ID]
+
+
 
