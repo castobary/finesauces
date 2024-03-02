@@ -82,5 +82,13 @@ While we are in the admin site, let’s add one more category to the portfolio (
 
 
 
+## Extra argument in a view function
 
+“To pass our `category_slug` to `product_list` view, we will need to modify `urls.py` file residing in listings application to include another URL that will be responsible for passing slug to our view:
+
+
+def get_absolute_url(self):
+        return reverse(
+            'listings:product_list_by_category',
+            args=[self.slug])
 
