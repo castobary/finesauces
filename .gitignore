@@ -10,3 +10,4 @@ env
 Pipfile
 Pipfile.lock
 credentials.py
+*.DS_Store
