@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     # my apps
     'listings',  # a store application
+    'cart',
 ]
 
 MIDDLEWARE = [
@@ -131,4 +132,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+# Sessions
+
+# Cart Session
+
+CART_ID = 'cart'
 
