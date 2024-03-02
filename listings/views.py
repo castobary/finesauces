@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Category, Product
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Category, Product, Review
+from .forms import ReviewForm
 
 # Create your views here.
 
@@ -30,8 +31,31 @@ def product_detail(request, category_slug, product_slug):
         category_id = category.id,
         slug=product_slug
         )
+    
+    if request.method == 'POST':
+        review_form = ReviewForm(request.POST)
+
+        if review_form.is_valid():
+            cf = review_form.cleaned_data
+
+            author_name = "Anonymous"
+            Review.objects.create(
+                product = product,
+                author = author_name,
+                rating = cf['rating'],
+                text = cf['text']
+            )
+
+        return redirect(
+            'listings:product_detail',
+            category_slug = category_slug, product_slug = product_slug)
+    
+    else:
+        review_form = ReviewForm()
+
     return render(
          request,'listings/product_detail.html',
          {
-           'product': product
+           'product': product,
+           'review_form': review_form
             })

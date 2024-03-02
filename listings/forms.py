@@ -15,7 +15,5 @@ class ReviewForm(forms.ModelForm):
                     'class': 'form-control shadow px-2',
                     'rows': 6
                 }),
-            'rating': forms.RadioSelect(
-                choices= REVIEW_CHOICES
-            )    
+            'rating': forms.RadioSelect
         }

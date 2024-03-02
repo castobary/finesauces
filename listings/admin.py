@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product
+from .models import Category, Product, Review
 
 
 # Register your models here.
@@ -13,6 +13,12 @@ class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}  # have slug field filled from name
 
 
+
+class OrderReviewInline(admin.TabularInline):
+    model = Review
+    extra = 0
+
+
 #admin.site.register(Product)
     
 @admin.register(Product)
@@ -21,5 +27,8 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('category', 'available')
     list_editable = ('price', 'available')
     prepopulated_fields = {'slug': ('name',)}
+    inlines = [OrderReviewInline]
+
+
 
 

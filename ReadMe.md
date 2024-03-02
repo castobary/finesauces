@@ -92,3 +92,40 @@ While we are in the admin site, let’s add one more category to the portfolio (
 
 “This view is pretty straightforward. We provide category slug and product slug and fetch the corresponding product. We then pass it to our detail.html template, which we will build shortly. You might wonder where does category_id field comes from. Django, by default, adds it as the last column to our table to keep track of the relationship between category and product we defined in our models.py file.”
 
+## Redirect function
+
+“We start by importing redirect function. Instead of simply using render function to show an updated detail page, we want to reroute a user back to the product detail page to avoid potentially performing the review submission twice if the user refreshed the page right after publishing the review. Then we import our Review model and ReviewForm
+ that we just built.”
+
+## Reviews
+
+“In this new product_detail
+ view, we differentiate between POST
+ and GET
+ requests. POST
+ request will occur when a user submits a new review. If a user just visits the page, GET
+ request will take place. In this case, we render the page within the product detail.html
+ template, including ReviewForm().
+
+When POST
+ request occurs, we perform the following actions:
+
+- Instantiate ReviewForm with submitted data.
+- Check whether the form is valid. That’s where our MinValueValidator and MaxValueValidator do their part. This method validates data submitted in the form and returns True if all fields contain valid data. If any of the fields contain invalid data, we redirect the user back to the page without creating a Review object.
+- If the form is valid, we retrieve validated data by accessing the .cleaned_data
+ attribute of the form. This attribute is a dictionary of form fields and their values. This means we can access our submitted data using basic dictionary notations.
+- Then we create a new Review object with data provided and save it to the database. Note that the author
+ attribute defaults to "Anonymous" for now. Once we implement user accounts, we will modify this accordingly.”
+- Finally, we redirect the user back to our product detail page. Our product_detail
+ view then handles the HTTP request with GET request.method.”
+
+
+## Radio Buttonss
+
+<code>
+{{ review_form.rating.0 }}
+{{ review_form.rating.1 }}
+{{ review_form.rating.2 }}
+{{ review_form.rating.3 }}
+{{ review_form.rating.4 }}
+</code>
