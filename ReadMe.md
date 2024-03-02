@@ -61,4 +61,26 @@ We added a couple of new attributes here. list_filter  will enable us to filter 
 While we are in the admin site, let’s add one more category to the portfolio (I will go with Extreme. Notice how the slug field is being filled in automatically).
 
 
+## Django Template Language (DTL)
+
+
+“Django also comes with its own template system called Django template language (DTL), which enables us to customize, how the template is presented. It comes with four constructs:
+
+
++ `{{variables}}` - allow us to render a value from the context
+ . They are surrounded by `{{ and }}`
+
+
++ `tags` - provide arbitrary logic in the rendering process. They most often serve as a control structure in shape of “if”
+ statement or a “for” loop. Tags are surrounded by {%
+ and %}
+
+
++ `filters` - transform the values of variables and tag arguments. They are surrounded by `{{ and }}` and come after variable we want to transform, separated by | (e.g. `{{ review.created|date}}`). They can also take arguments: `{{ review.created|date:"Y-m-d"}}`
+
++ `comments` - look like this: {# this won't be rendered #}. A `{% comment %}` tag provides multi-line comments and has to be concluded by `{% endcomment %}`
+
+
+
+
 
