@@ -24,7 +24,7 @@ def cart_add(request, product_id):
 
         if product_id not in cart:
            cart[product_id] = {
-                'quantity': 0,
+               'quantity': 0,
                'price': str(product.price)
              }
     
@@ -33,8 +33,8 @@ def cart_add(request, product_id):
     else:
           cart[product_id]['quantity'] += cd['quantity']
 
-          request.session.modified = True
-          return redirect('cart:cart_detail')
+    request.session.modified = True
+    return redirect('cart:cart_detail')
     
 def cart_detail(request):
   cart = get_cart(request)
