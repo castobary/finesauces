@@ -4,6 +4,14 @@ from .forms import OrderCreateForm
 from cart.views import get_cart, cart_clear
 from decimal import Decimal
 
+# Payment APIs
+
+from django.conf import settings
+import stripe
+
+stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+
+# Views
 
 def order_create(request):
     cart = get_cart(request)
