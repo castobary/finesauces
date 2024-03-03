@@ -137,3 +137,14 @@ When POST
 “It would be pretty handy to display the shopping cart link with the product cost up on the navbar, so it is visible and accessible from all of the pages. For this functionality, we will build a context processor to include the current cart in the request context, regardless of the view processing the request.
 Context processor is a Python function that takes the HttpRequest object as an argument and returns a dictionary that gets added to the request context. Context processors are useful, especially when we need to make something available globally to all templates”
 
+
+# Order Model
+
+The Order  model is responsible for managing order information such as customer details, when was the order created and updated, the status of the order, optional note from customer, transport method, and related cost. For created
+ and updated timestamps, we use slightly different arguments as they serve a different purpose. auto_now_add
+ sets the field to now  when the object is created, while auto_now sets the field to now
+ every time the object is saved.  Orders will be sorted based on the creation date
+ in descending order from the latest. get_total_cost() method calculates the total cost of the purchased items and adds related transport cost to provide total order cost.”
+
+
+
