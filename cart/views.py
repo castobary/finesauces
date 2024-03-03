@@ -46,6 +46,7 @@ def cart_detail(request):
     cart_item = temp_cart[str(product.id)]
     cart_item['product'] = product
     cart_item['total_price'] = (Decimal(cart_item['price']) * cart_item['quantity'])
+    cart_item['update_quantity_form'] = CartAddProductForm(initial={'quantity': cart_item['quantity']})
 
  
   cart_total_price = sum(Decimal(item['price']) * item['quantity']

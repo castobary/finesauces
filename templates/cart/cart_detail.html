@@ -61,10 +61,10 @@
         <span>${{ product.price }}</span>
       </div>
       <div class="cart-item col-6 col-sm-5 col-lg-2 align-self-center">
-        <form>
+        <form action="{% url 'cart:cart_add' product.id %}" method="POST">
+          {% csrf_token %}
           <span class="input-group shopping-cart">
-            <input type="number" value="1"
-              class="form-control text-center px-3">
+          {{ item.update_quantity_form.quantity }}
             <input type="hidden" name="overwrite_qty" value="True">
             <div class="input-group-append">
               <button type="submit" class="btn text-white"
@@ -77,12 +77,13 @@
         </form>
       </div>
       <div class="cart-item col-12 col-sm-3
-        col-lg-2 align-self-center text-right>
-“<span>${{ item.total_price }}</span>
+        col-lg-2 align-self-center text-right">
+ <span>${{ item.total_price }}</span>
       </div>
       <div class="cart-item col-12 col-lg-1 text-right
         align-self-center">
-        <form>
+        <form action="{% url 'cart:cart_remove' product.id %}" method="POST">
+          {% csrf_token %}
           <button type="submit" class="btn" data-toggle="tooltip"
             data-placement="top" title="Remove">
             <i class="fas fa-trash-alt"></i>
@@ -114,21 +115,35 @@
   </div>
 </div>
 <hr>
+
 <div class="col-lg-10 mx-auto mb-5">
   <div class="row justify-content-end">
-    <div class="col-lg-6 px-0">
-      <div class="btn-group d-flex">
-        <a href="{% url 'listings:product_list' %}
-   class="btn btn-warning shadow-custom col">
-          Back to shop
-        </a>
-        <a href="" class="btn btn-danger shadow-custom col">
-          Checkout
-        </a>
+    {% if cart|length > 0 %}
+      <div class="col-lg-6 px-0">
+        <div class="btn-group d-flex">
+          <a href="{% url 'listings:product_list' %}"
+            class="btn btn-warning shadow-custom col">
+            Back to shop
+          </a>
+          <a href="" class="btn btn-danger shadow-custom col">
+            Checkout
+          </a>
+        </div>
       </div>
-    </div>
+    {% else %}
+      <div class="col-lg-3 px-0">
+        <div class="btn-group d-flex">
+          <a href="{% url 'listings:product_list' %}"
+            class="btn btn-warning shadow-custom col">
+            Back to shop
+          </a>
+        </div>
+    
+   </div>
+    {% endif %}
   </div>
 </div>
+
 {% endblock content %}
 
 

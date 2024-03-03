@@ -130,3 +130,10 @@ When POST
 {{ review_form.rating.3 }}
 {{ review_form.rating.4 }}
 </code>
+
+
+## Context Processors
+
+“It would be pretty handy to display the shopping cart link with the product cost up on the navbar, so it is visible and accessible from all of the pages. For this functionality, we will build a context processor to include the current cart in the request context, regardless of the view processing the request.
+Context processor is a Python function that takes the HttpRequest object as an argument and returns a dictionary that gets added to the request context. Context processors are useful, especially when we need to make something available globally to all templates”
+
