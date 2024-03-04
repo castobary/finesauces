@@ -11,6 +11,10 @@ import stripe
 
 stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
 
+# sending emails
+
+from .tasks import order_created
+
 # Views
 
 def order_create(request):
@@ -56,6 +60,9 @@ def order_create(request):
             )
 
         cart_clear(request)
+
+        order_created.delay(order.id)
+        
         return render(
                 request,
                 'orders/order_created.html',
