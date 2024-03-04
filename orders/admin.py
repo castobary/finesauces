@@ -1,5 +1,84 @@
 from django.contrib import admin
-from .models import Order, OrderItem
+from .models import Order, OrderItem, Product
+import xlsxwriter
+import datetime
+from django.http import HttpResponse
+
+
+def export_to_xlsx(modeladmin, request, queryset):
+    opts = modeladmin.model._meta
+    dateTimeObj = datetime.datetime.now()
+    timestamp = dateTimeObj.strftime("%d-%b-%Y")
+    content_disposition = f'attachment; filename=orders_{timestamp}.xlsx'
+    response = HttpResponse(content_type=
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = content_disposition
+    workbook = xlsxwriter.Workbook(response, {'in_memory': True})
+    worksheet = workbook.add_worksheet()
+
+    fields = [field for field in opts.get_fields() \
+        if not field.one_to_many]
+    header_list = [field.name for field in fields]
+
+    products = Product.objects.all()
+    for product in products:
+        header_list.append(f'{product.name} qty')
+        header_list.append(f'{product.name} price')
+
+    header_list.append('order_price_total')
+
+  
+   # write the header
+    for column, item in enumerate(header_list):
+        worksheet.write(0, column, item)
+
+    # write data rows
+    for row, obj in enumerate(queryset):
+
+        # load the order item details into dictionary
+        prod_tracker = {product.name:{'qty': 0, 'price': 0} \
+            for product in products}
+
+        order_items = obj.items.all()
+        for item in order_items:
+            prod_tracker[item.product.name]['qty'] = item.quantity
+            prod_tracker[item.product.name]['price'] = item.price
+           
+        data_row = []
+        order_price_total = 0
+
+        # iterate through fields in Order object
+        # and append data to data_row list
+        for field in fields:
+            value = getattr(obj, field.name)
+            if field.name == 'transport_cost':
+                order_price_total += value
+            if isinstance(value, datetime.datetime):
+                value = value.strftime('%d/%m/%Y')
+            data_row.append(value)
+        
+        # iterate through order item data - qty and price
+        # and append to data_row list
+        for product in prod_tracker:
+            for qty_price in prod_tracker[product]:
+                data_row.append(prod_tracker[product][qty_price])
+            order_price_total += (
+                prod_tracker[product]['qty'] * prod_tracker[product]['price']
+            )
+
+        # append total cost to data_row list
+        data_row.append(order_price_total)
+
+        for column, item in enumerate(data_row):
+ 
+            worksheet.write(row + 1, column, item)
+
+    workbook.close()
+
+    return response
+
+export_to_xlsx.short_description = 'Export to XLSX'
+
 
 # Register your models here.
 
@@ -21,3 +100,7 @@ class OrderAdmin(admin.ModelAdmin):
     ]
 
     inlines = [OrderItemInline]
+
+    # action to produce xlsx
+
+    actions = [export_to_xlsx]
