@@ -15,6 +15,15 @@ stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
 
 from .tasks import order_created
 
+# pdf printing
+
+from django.contrib.admin.views.decorators import staff_member_required
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+import weasyprint
+
+
+
 # Views
 
 def order_create(request):
@@ -82,3 +91,17 @@ def order_create(request):
             'transport_cost': transport_cost
         }
     )
+
+@staff_member_required
+def invoice_pdf(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    response = HttpResponse(content_type = 'application/pdf')
+    response['Content-Disposition'] = f'filename=order_{order.id}.pdf'
+
+    #generate_pdf
+    html = render_to_string('pdf.html', {'order': order})
+    stylesheets = [weasyprint.CSS(settings.STATIC_ROOT + 'css/pdf.css')]
+    weasyprint.HTML(string=html).write_pdf(response, stylesheets=stylesheets)
+
+    return response
