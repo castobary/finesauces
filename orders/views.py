@@ -22,8 +22,6 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 import weasyprint
 
-
-
 # Views
 
 def order_create(request):
@@ -100,7 +98,7 @@ def invoice_pdf(request, order_id):
     response['Content-Disposition'] = f'filename=order_{order.id}.pdf'
 
     #generate_pdf
-    html = render_to_string('pdf.html', {'order': order})
+    html = render_to_string('orders/pdf.html', {'order': order})
     stylesheets = [weasyprint.CSS(settings.STATIC_ROOT + 'css/pdf.css')]
     weasyprint.HTML(string=html).write_pdf(response, stylesheets=stylesheets)
 
