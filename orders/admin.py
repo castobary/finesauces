@@ -4,6 +4,10 @@ import xlsxwriter
 import datetime
 from django.http import HttpResponse
 
+# status change notification
+
+from .tasks import status_change_notification
+
 
 def export_to_xlsx(modeladmin, request, queryset):
     opts = modeladmin.model._meta
@@ -86,6 +90,8 @@ def status_change(queryset, status):
     for order in queryset:
         order.status = status
         order.save()
+
+    status_change_notification.delay(order.id)
 
 def status_processing(modeladmin, request,queryset):
     status_change(queryset, 'Processing')
