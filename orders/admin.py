@@ -82,13 +82,32 @@ export_to_xlsx.short_description = 'Export to XLSX'
 
 # Order status
 
-def status_processing(modeladmin, request, queryset):
+def status_change(queryset, status):
     for order in queryset:
-        order.status = 'Processing'
+        order.status = status
         order.save()
 
-status_processing.short_description = 'status_processing'    
+def status_processing(modeladmin, request,queryset):
+    status_change(queryset, 'Processing')
 
+status_processing.short_description = 'status_processing'
+
+def status_shipped(modeladmin, request,queryset):
+    status_change(queryset, 'Shipped')
+
+status_shipped.short_description = 'status_shipped'  
+
+
+def status_ready_for_pickup(modeladmin, request,queryset):
+    status_change(queryset, 'Ready for pickup')
+
+status_ready_for_pickup.short_description = 'status_ready_for_pickup'  
+
+
+def status_completed(modeladmin, request,queryset):
+    status_change(queryset, 'Completed')
+
+status_processing.short_description = 'status_completed'  
 
 # Register your models here.
 
@@ -106,11 +125,15 @@ class OrderAdmin(admin.ModelAdmin):
         'status'
     ]
     list_filter = [
-        'created', 'updated', 'status',
+        'created', 'updated', 'status','transport'
     ]
 
     inlines = [OrderItemInline]
 
     # action to produce xlsx
 
-    actions = [export_to_xlsx, status_processing]
+    actions = [export_to_xlsx, 
+               status_processing,
+               status_shipped,
+               status_ready_for_pickup,
+               status_completed]
