@@ -80,6 +80,16 @@ def export_to_xlsx(modeladmin, request, queryset):
 export_to_xlsx.short_description = 'Export to XLSX'
 
 
+# Order status
+
+def status_processing(modeladmin, request, queryset):
+    for order in queryset:
+        order.status = 'Processing'
+        order.save()
+
+status_processing.short_description = 'status_processing'    
+
+
 # Register your models here.
 
 class OrderItemInline(admin.TabularInline):
@@ -96,11 +106,11 @@ class OrderAdmin(admin.ModelAdmin):
         'status'
     ]
     list_filter = [
-        'created', 'updated'
+        'created', 'updated', 'status',
     ]
 
     inlines = [OrderItemInline]
 
     # action to produce xlsx
 
-    actions = [export_to_xlsx]
+    actions = [export_to_xlsx, status_processing]
