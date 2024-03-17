@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'master/master.html' %}
 
 {% block title %}Log in{% endblock %}
-
+<!--Use this template if you prefer to use django inbuilt login view-->
 {% block content %}
 {% if form.errors %}
   <div class="shadow-custom messages alert alert-danger

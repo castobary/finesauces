@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth.views import LogoutView
 from .forms import LoginForm
 
 def user_login(request):
@@ -33,3 +34,14 @@ def user_login(request):
         form = LoginForm()
     return render(request, 'accounts/login.html', {'form': form})
 
+class UserLogoutView(LogoutView):
+    """custom logout view"""
+
+    def get_next_page(self):
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            "You successfully log out!",
+            extra_tags="alert-success",
+        )
+        return super().get_next_page()

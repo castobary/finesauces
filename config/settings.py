@@ -28,6 +28,9 @@ except ImportError:
     pass 
 
 LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL= 'listings:product_list'
+
+LOGOUT_REDIRECT_URL= 'accounts:login'
 # Application definition
 
 INSTALLED_APPS = [
