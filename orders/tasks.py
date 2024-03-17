@@ -26,7 +26,7 @@ def order_created(order_id):
   )
 
   # generate pdf
-  html = render_to_string('pdf.html', {'order': order})
+  html = render_to_string('orders/pdf.html', {'order': order})
   out = BytesIO()
   stylesheets = [weasyprint.CSS(settings.STATIC_ROOT + 'css/pdf.css')]
  
