@@ -27,13 +27,12 @@ try:
 except ImportError:
     pass 
 
-
-
-
-
 # Application definition
 
 INSTALLED_APPS = [
+    # my accounts app
+    'accounts',
+    # default apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -45,7 +44,7 @@ INSTALLED_APPS = [
     'listings',  # a store application
     'cart',
     'orders',
-    'accounts',
+   
 ]
 
 MIDDLEWARE = [
