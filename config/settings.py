@@ -27,6 +27,7 @@ try:
 except ImportError:
     pass 
 
+LOGIN_URL = 'login'
 # Application definition
 
 INSTALLED_APPS = [

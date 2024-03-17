@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from django.contrib import messages
 from .forms import LoginForm
 
 def user_login(request):
@@ -25,6 +26,8 @@ def user_login(request):
                 if user is not None:
                     login(request, user)
                     return redirect('listings:product_list')
+            
+            messages.error(request, 'Incorrect email/password')
         
     else:
         form = LoginForm()
