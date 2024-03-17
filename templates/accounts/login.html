@@ -8,8 +8,10 @@
   <div class="shadow-custom messages alert alert-danger
     col-lg-4 mx-auto text-center">
     {% for message in messages %}
-      {{ message }}
-      <a href="" class="close">x</a>
+       {% if message.tags == 'error' %}
+        {{ message }}
+        <a href="" class="close">x</a>
+       {% endif %}
     {% endfor %}
   </div>
 {% endif %}
