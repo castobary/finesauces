@@ -9,8 +9,8 @@ from django.urls import reverse
 from django.utils.html import format_html
 
 def order_pdf(obj):
-    return format_html('PDF',
-                       reverse('orders:invoice_pdf', args=[obj.id]))
+    invoice_pdf_url = reverse('orders:invoice_pdf', args=[obj.id])
+    return format_html('<a href="{}">PDF</a>', invoice_pdf_url)
 
 order_pdf.short_description = 'Invoice'
 

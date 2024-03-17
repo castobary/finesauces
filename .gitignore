@@ -11,3 +11,5 @@ Pipfile
 Pipfile.lock
 credentials.py
 *.DS_Store
+*/.DS_Store
+/static/admin/
