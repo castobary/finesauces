@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect,reverse
 from .models import OrderItem, Order, Product
 from .forms import OrderCreateForm
 from cart.views import get_cart, cart_clear
@@ -25,9 +25,15 @@ import weasyprint
 # Views
 
 def order_create(request):
+
+    if not request.user.is_authenticated:
+        return redirect(reverse('accounts:login'))
+    
     cart = get_cart(request)
     cart_qty = sum(item['quantity'] for item in cart.values())
     transport_cost = round((3.99 + (cart_qty // 10) * 1.5), 2)
+
+    order = None
 
     if request.method == 'POST':
         order_form = OrderCreateForm(request.POST)
@@ -40,9 +46,10 @@ def order_create(request):
 
             order = order_form.save(commit=False)
             if request.user.is_authenticated:
-                order.user = request.user
-            order.transport_cost = Decimal(transport_cost)
-            order.save()
+               order.user = request.user
+               order.transport_cost = Decimal(transport_cost)
+               order.save()
+            
 
             product_ids = cart.keys()
             products = Product.objects.filter(id__in=product_ids)
@@ -55,6 +62,7 @@ def order_create(request):
                     price=cart_item['price'],
                     quantity=cart_item['quantity']
                 )
+
 
             customer = stripe.Customer.create(
                 email=cf['email'],
@@ -90,9 +98,8 @@ def order_create(request):
                'address': request.user.profile.address,
                'postal_code': request.user.profile.postal_code,
                'city': request.user.profile.city,
-               'country': request.user.profile.country,
-    }
-    order_form = OrderCreateForm(initial=initial_data)
+               'country': request.user.profile.country }
+           order_form = OrderCreateForm(initial=initial_data)
 
 
     return render(
