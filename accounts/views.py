@@ -11,6 +11,7 @@ from .forms import (LoginForm,
                     UpdateProfileForm)
 from django.contrib.auth.decorators import login_required
 
+
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -133,7 +134,7 @@ def profile(request):
         else:
             messages.error(request, 'User with given email already exists')
 
-        return redirect('profile')
+        return redirect('accounts:profile')
 
     else:
         user_form = UpdateUserForm(instance=request.user)
