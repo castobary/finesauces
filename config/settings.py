@@ -27,7 +27,7 @@ try:
 except ImportError:
     pass 
 
-LOGIN_URL = 'login'
+LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL= 'listings:product_list'
 
 LOGOUT_REDIRECT_URL= 'accounts:login'
