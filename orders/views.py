@@ -125,3 +125,17 @@ def invoice_pdf(request, order_id):
     weasyprint.HTML(string=html).write_pdf(response, stylesheets=stylesheets)
 
     return response
+
+def customer_invoice_pdf(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'filename=order_{order.id}.pdf'
+
+    # generate pdf
+    html = render_to_string('orders/pdf.html', {'order': order})
+    stylesheets=[weasyprint.CSS(settings.STATIC_ROOT + 'css/pdf.css')]
+ 
+    weasyprint.HTML(string=html).write_pdf(response,stylesheets=stylesheets)
+
+    return response
