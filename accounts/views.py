@@ -2,9 +2,14 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from .models import Profile
 from django.contrib import messages
 from django.contrib.auth.views import LogoutView
-from .forms import LoginForm, UserRegistrationForm
+from .forms import (LoginForm, 
+                    UserRegistrationForm,
+                    UpdateUserForm,
+                    UpdateProfileForm)
+from django.contrib.auth.decorators import login_required
 
 def user_login(request):
     if request.method == 'POST':
@@ -81,6 +86,9 @@ def register(request):
                 password=password
             )
 
+        # create user profile
+        Profile.objects.create(user=new_user)
+
         return render(
                 request,
                 'accounts/register_done.html',
@@ -92,6 +100,52 @@ def register(request):
         request,
         'accounts/register.html',
         {'user_form': user_form}
+    )
+
+
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        user = None
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            pass
+
+        if user is None or user.id == request.user.id:
+            user_form = UpdateUserForm(
+                instance=request.user,
+                data=request.POST
+ 
+            )
+            profile_form = UpdateProfileForm(
+                instance=request.user.profile,
+                data=request.POST,
+            )
+
+            if user_form.is_valid() and profile_form.is_valid():
+                user_form.save()
+                profile_form.save()
+
+                messages.success(request, 'Profile was updated successfully')
+        else:
+            messages.error(request, 'User with given email already exists')
+
+        return redirect('profile')
+
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+        profile_form = UpdateProfileForm(instance=request.user.profile)
+
+    return render(
+        request,
+        'accounts/profile.html',
+        {
+            'user_form': user_form,
+            'profile_form': profile_form
+        }
     )
 
 

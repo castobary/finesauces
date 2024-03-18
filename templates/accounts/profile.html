@@ -1,0 +1,93 @@
+{% extends 'master/master.html' %}
+
+{% block title %}Account{% endblock %}
+
+{% block content %}
+{% if messages %}
+  {% for message in messages %}
+    {% if message.tags == 'error' %}
+    <div class="shadow-custom messages alert alert-danger text-center
+      col-lg-7 mx-auto">
+    {% else %}
+    <div class="shadow-custom messages alert alert-success text-center
+      col-lg-7 mx-auto">
+    {% endif %}
+      {{ message }}
+      <a href="" class="close">x</a>
+    </div>
+  {% endfor %}
+{% endif %}
+  <div class="card shadow-custom border-0 col-lg-7 mx-auto mb-3">
+    <h2 class="font-weight-bold text-grey mt-2">Profile</h2>
+    <form action="" method="POST">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-field">
+            {{ user_form.first_name }}
+            <label for="first_name">First name</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-field">
+    
+         {{ user_form.last_name }}
+            <label for="last_name">Last name</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-field">
+            {{ user_form.email }}
+            “<label for="email">Email</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-field">
+            {{ profile_form.phone_number }}
+            <label for="phone_number">Phone number</label>
+          </div>
+        </div>
+      </div>
+      <hr class="mt-0">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-field">
+            {{ profile_form.address }}
+            <label for="address">Address</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-field">
+            {{ profile_form.postal_code }}
+            <label for="postal_code">Postal code</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-field">
+            {{ profile_form.city }}
+            <label for="city">City</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-field">
+            {{ profile_form.country }}
+            <label for="country">Country</label>
+          </div>
+      </div>
+      </div>
+      <hr>
+      <div class="row">
+        <button type="submit" class="btn col" data-toggle="tooltip"
+          data-placement="top"
+          title="Fill in new details and click 'Update profile'">
+          Update profile</button>
+        <a class="btn col" href="{% url 'accounts:password_change' %}">
+          Change password
+        </a>
+      </div>
+      <hr>
+      </form>
+  </div>
+</div>
+{% endblock %}
+
