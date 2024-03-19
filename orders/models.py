@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from listings.models import Product
+from django.urls import reverse
 
 # Create your models here.
 
@@ -51,6 +52,10 @@ class Order(models.Model):
         total_cost = sum(item.get_cost() for item in self.items.all())
         total_cost += self.transport_cost
         return total_cost
+    
+    def get_absolute_url(self):
+        return reverse("orders:order_detail", args={self.pk})
+    
     
 class OrderItem(models.Model):
     order = models.ForeignKey(
