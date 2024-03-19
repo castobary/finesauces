@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect,reverse
 from .models import OrderItem, Order, Product
 from .forms import OrderCreateForm
 from cart.views import get_cart, cart_clear
+from config.decorators import user_created_order
 from decimal import Decimal
 
 # Payment APIs
@@ -126,6 +127,7 @@ def invoice_pdf(request, order_id):
 
     return response
 
+@user_created_order
 def customer_invoice_pdf(request, order_id):
     order = get_object_or_404(Order, id=order_id)
 

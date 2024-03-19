@@ -9,7 +9,7 @@ def user_created_order(view_func):
         try:
             order = Order.objects.get(id=order_id, user=request.user)
         except Order.DoesNotExist:
-            return redirect('profile')
+            return redirect('accounts:profile')
 
         return view_func(request, *args, **kwargs)
 
